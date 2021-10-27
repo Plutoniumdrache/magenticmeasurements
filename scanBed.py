@@ -8,6 +8,7 @@ def reading():
             if incomming == bytes('', 'utf-8'): # stop reading if no more messages are comming in
                 break
             print(str(incomming, 'utf-8'))
+            
 
 
 
@@ -24,23 +25,33 @@ def getPosition(serialConnection):
     # X Position
     xCharacterPos = incomming_str.find('X')
     xExtracted = incomming_str[xCharacterPos+2:xCharacterPos+7]
-    xExtracted.rstrip()
-    x = float(xExtracted)
+    xExtracted = xExtracted.rstrip()
+    if xExtracted.replace('.', '', 1).isdigit():
+        x = float(xExtracted)
+    else:
+        x = -1.0 
     
     # Y position
     yCharacterPos = incomming_str.find('Y')
     yExtracted = incomming_str[yCharacterPos+2:yCharacterPos+7]
-    yExtracted.rstrip()
-    y = float(yExtracted)
+    yExtracted = yExtracted.rstrip()
+    if yExtracted.replace('.', '', 1).isdigit():
+        y = float(yExtracted)
+    else:
+        y = -1.0
     
     # Z position
     zCharacterPos = incomming_str.find('Z')
     zExtracted = incomming_str[zCharacterPos+2:zCharacterPos+7]
-    zExtracted.rstrip()
-    z = float(zExtracted)
+    zExtracted = zExtracted.rstrip()
+    if zExtracted.replace('.', '', 1).isdigit():
+        z = float(zExtracted)
+    else:
+        z = -1.0
 
     position = [x, y, z]
     print(position)
+    return position
 
 
 ################################################################################
@@ -66,25 +77,35 @@ time.sleep(0.5)
 # auto-home
 cmd = bytes('G28' + '\n', 'utf-8')
 s.write(cmd)
-reading()
-time.sleep(0.5)
+while True:
+    pos = getPosition(s)
+    time.sleep(0.2)
+    if pos == [0.0, 0.0, 0.0]:
+        break
 
 # move z axis:
 cmd = bytes('G0 Z10 F500' + '\n', 'utf-8')
 s.write(cmd)
 reading()
 time.sleep(0.5)
-for i in range(0, 20, 1):
+for i in range(0, 11, 1):
     print(i)
     cmd = bytes('G0 Y' + str(i) + '\n', 'utf-8')
     s.write(cmd)
     reading()
-    for i in range(0, 20, 1):
+
+    cmd = bytes('G0 X0' + '\n', 'utf-8') # move x-axis to start position
+    s.write(cmd)
+    while True:
+        pos = getPosition(s)
+        if pos[0] == 0.0:
+            break
+
+    for i in range(0, 11, 1):
         print(i)
         cmd = bytes('G0 X' + str(i) + '\n', 'utf-8')
         s.write(cmd)
         reading()
-    getPosition(s)
     
     
 s.close
