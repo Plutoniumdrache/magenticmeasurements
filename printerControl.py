@@ -12,7 +12,12 @@ def reading():
 
 from serial.serialutil import Timeout
 
-s = serial.Serial('COM7', 115200, timeout=1) # opening the serial connection to the printer
+# Windows version
+#s = serial.Serial('COM7', 115200, timeout=1) # opening the serial connection to the printer
+
+# Ubuntu version
+s = serial.Serial('/dev/ttyUSB0', 115200, timeout=1) # opening the serial connection to the printer
+
 print(s.name)
 
 time.sleep(4) # give him some time
