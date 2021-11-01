@@ -141,4 +141,7 @@ dmypy.json
 # profiling data
 .prof
 
+#VS Code
+.vscode/
+pyvenv.cfg
 # End of https://www.toptal.com/developers/gitignore/api/python
