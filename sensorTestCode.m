@@ -10,4 +10,4 @@ sensor.readline
 sensor.writeline("RC")
 while 1
     sensor.readline
-end 
+end
