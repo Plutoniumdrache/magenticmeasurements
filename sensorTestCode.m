@@ -7,7 +7,13 @@ sensor.flush
 sensor.writeline("HI");
 sensor.readline
 
-sensor.writeline("RC")
-while 1
-    sensor.readline
+% first call is answered with confirmation ("Manual Read")
+sensor.writeline("RM")
+confirmation = sensor.readline;
+
+for  i = 0:1:20
+    sensor.writeline("RM")
+    data = sensor.readline;
+    strArr = split(data, " ");
+    sensValue = double(strip(strArr(2,1), 'right', char(13)))
 end
