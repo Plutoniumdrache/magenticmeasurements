@@ -3,9 +3,9 @@
 % parameters for bed scan:
 Y_start_coordinate = 10;
 X_start_coordinate = 10;
-Y_range = 10;
-X_range = 10;
-height = 20;
+Y_range = 5;
+X_range = 5;
+Z_height = 20;
 
 
 % COM Ports
