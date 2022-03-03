@@ -15,24 +15,24 @@ run("configSerial.m");
 s = System(printer, sensor, nano);
 fsm = printerFSM(s, States);
 
-% while 1
-%     fsm.eval
-% end
+while 1
+    fsm.eval
+end
 
-% auto home printer
-s.autohome;
-
-% setting height
-s.setHeight(Z_height);
-
-% driving to initial coordinates
-s.moveToXY(X_start_coordinate, Y_start_coordinate);
+% % auto home printer
+% s.autohome;
+% 
+% % setting height
+% s.setHeight(Z_height);
+% 
+% % driving to initial coordinates
+% s.moveToXY(X_start_coordinate, Y_start_coordinate);
 
 %% begin bed scan
-values = s.bedScan(X_start_coordinate, Y_start_coordinate, X_range, Y_range);
-
-writeline(printer, "M84") % disable steppers
+% values = s.bedScan(X_start_coordinate, Y_start_coordinate, X_range, Y_range);
+% 
+% writeline(printer, "M84") % disable steppers
 
 %% disp matrix
-[X,Y] = meshgrid(1:200, 1:200);
-surf(values);
+% [X,Y] = meshgrid(1:200, 1:200);
+% surf(values);
