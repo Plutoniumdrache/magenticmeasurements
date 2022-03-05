@@ -3,7 +3,7 @@
 % Date: 23.02.2022
 %% configure printer
 printer = serialport(COM_Printer, 115200, Timeout=2); % starting serial connection
-printer.Terminator;
+printer.Terminator; 
 readline(printer);
 configureTerminator(printer,"CR");
 %% config arduino
