@@ -41,7 +41,7 @@ classdef System
             % waiting for drive to complete
             while 1
                 data = obj.nano.readline; % getting coordinates from arduino
-                new = split(data, ",");
+                new = split(data, ",")
                 if data == new
                 else
                     obj.currPosX = double(new(1,1));

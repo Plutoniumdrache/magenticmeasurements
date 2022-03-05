@@ -7,7 +7,7 @@ classdef printerFSM < handle
         States;
         currentHeight = 0;
         values;
-        travelspeed = 3000;
+        travelspeed = 2000;
     end
     methods
         function obj = printerFSM(system, States) % constructor
@@ -40,7 +40,7 @@ classdef printerFSM < handle
                 case obj.States.LOADING
                     obj.currentHeight = 20;
                     obj.system.setHeight(obj.currentHeight); % offset damit nicht gegen Bett gefahren wird
-                    obj.system.moveToXY(0, 235, 3000); % Bett nach vorne zur Beladung
+                    obj.system.moveToXY(0, 235, obj.travelspeed); % Bett nach vorne zur Beladung
                     nextstate = obj.States.PARAMETER_SETUP;
 
                 case obj.States.PARAMETER_SETUP
@@ -103,16 +103,23 @@ classdef printerFSM < handle
                     clear init;
                     run("init.m");
                     obj.values = obj.system.bedScan(X_start_coordinate, Y_start_coordinate, X_range, Y_range);
+                    disp("Messung abgeschlossen.");
                     nextstate = obj.States.SHOW;
                 case obj.States.SHOW
+                    
                     % disp matrix as surf plot
+                    disp("Zeige Messergergebnisse:")
                     [X,Y] = meshgrid(1:235, 1:235);
                     surf(obj.values)
+                    % write matrix to csv file
+                    writematrix(obj.values, 'data.csv')
 
+                    disp("Fahre Bett nach vorne.")
                     obj.currentHeight = obj.currentHeight + 5;
                     obj.system.setHeight(obj.currentHeight); % offset damit nicht gegen Bett gefahren wird
-                    obj.system.moveToXY(0, 235, 3000); % Bett nach vorne zur Beladung
+                    obj.system.moveToXY(0, 235, obj.travelspeed); % Bett nach vorne zur Beladung
                     nextstate = obj.States.PARAMETER_SETUP;
+                    disp("Die Messung kann jetzt erneut durchgeführt werden.")
                 otherwise
             end
             obj.currentState = nextstate;
