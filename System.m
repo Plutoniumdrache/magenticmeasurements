@@ -1,4 +1,6 @@
-classdef System
+% Class representing the Hardware of the measurement system
+% Author: Julius Preuschoff
+% Date: 23.02.2022classdef System
     properties
         printer;
         sensor;

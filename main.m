@@ -1,4 +1,3 @@
-
 % Magnetic Field Scanner with 3D-Printer Ender 3
 % Author: Julius Preuschoff
 % Date: 23.02.2022
@@ -11,7 +10,7 @@ clear fsm;
 
 run("init.m");
 run("configSerial.m");
-%% pre measure movements
+%% running system
 s = System(printer, sensor, nano);
 fsm = printerFSM(s, States);
 
