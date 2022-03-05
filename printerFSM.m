@@ -1,4 +1,6 @@
 % FSM Class
+% Author: Julius Preuschoff
+% Date: 23.02.2022
 
 classdef printerFSM < handle
     properties
@@ -106,13 +108,18 @@ classdef printerFSM < handle
                     disp("Messung abgeschlossen.");
                     nextstate = obj.States.SHOW;
                 case obj.States.SHOW
-                    
+                    % convert values from Oe to T
+                    my_0 = 1.256637061e-6;
+                    my_r = 1; % air
+                    B_values = my_0 * my_0 * (1000 / 4*pi) * obj.values;
+
                     % disp matrix as surf plot
                     disp("Zeige Messergergebnisse:")
                     [X,Y] = meshgrid(1:235, 1:235);
-                    surf(obj.values)
+                    surf(B_values)
+
                     % write matrix to csv file
-                    writematrix(obj.values, 'data.csv')
+                    writematrix(B_values, filename + ".csv");
 
                     disp("Fahre Bett nach vorne.")
                     obj.currentHeight = obj.currentHeight + 5;
