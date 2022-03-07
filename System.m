@@ -1,6 +1,7 @@
 % Class representing the Hardware of the measurement system
 % Author: Julius Preuschoff
-% Date: 23.02.2022classdef System
+% Date: 23.02.2022
+classdef System
     properties
         printer;
         sensor;
@@ -34,19 +35,20 @@
         
         % move printhead to given destination X Y with speed set up
         function moveToXY(obj, X, Y, speed)
+            % building the G-Code Command
             initPosStr_Y = "G0 Y" + string(Y) + " F" + speed;
             initPosStr_X = "G0 X" + string(X) + " F" + speed;
-            % sending absolute start position to printer
+            % sending absolute position to printer
             obj.printer.writeline(initPosStr_Y);
             obj.printer.writeline(initPosStr_X);
 
             % waiting for drive to complete
             while 1
                 data = obj.nano.readline; % getting coordinates from arduino
-                new = split(data, ",")
-                if data == new
+                new = split(data, ","); % splitting the incomming coordinates
+                if data == new % check for empty messages
                 else
-                    obj.currPosX = double(new(1,1));
+                    obj.currPosX = double(new(1,1)); % converting to numbers
                     obj.currPosY = double(new(2,1));
                 end
                 % checking postion
@@ -63,7 +65,7 @@
 
         % getting sensor value
         function value = getSensorValue(obj)
-            obj.sensor.writeline("RM")
+            obj.sensor.writeline("RM");
             data = obj.sensor.readline;
             strArr = split(data, " "); % splitting given sensor string
             value = double(strip(strArr(2,1), 'right', char(13))); % extracting value from string

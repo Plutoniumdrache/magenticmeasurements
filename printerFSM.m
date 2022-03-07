@@ -119,6 +119,7 @@ classdef printerFSM < handle
                     surf(B_values)
 
                     % write matrix to csv file
+                    run("init.m"); % getting filename variable
                     writematrix(B_values, filename + ".csv");
 
                     disp("Fahre Bett nach vorne.")
