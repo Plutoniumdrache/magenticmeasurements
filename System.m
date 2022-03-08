@@ -22,12 +22,14 @@ classdef System
             
             while 1 % waiting for auto home to complete
                 data = obj.nano.readline();
-                str = strip(string(data), "right", char(13));
-                if str == "home"
-                    obj.nano.flush;
-                    pause(5);
-                    obj.nano.flush;
-                    break;
+                if isstring(data)
+                    str = strip(string(data), "right", char(13));
+                    if str == "home"
+                        obj.nano.flush;
+                        pause(5);
+                        obj.nano.flush;
+                        break;
+                    end
                 end
             end
             done = 1;
@@ -69,6 +71,9 @@ classdef System
             data = obj.sensor.readline;
             strArr = split(data, " "); % splitting given sensor string
             value = double(strip(strArr(2,1), 'right', char(13))); % extracting value from string
+            % The String is in the format "RD 7.77029\r". The command
+            % char(13) represents the \r character and is removed from the
+            % string by the code line above.
         end
 
         % bed scan
@@ -77,7 +82,7 @@ classdef System
             right = 1;
             
             for i = Y_start_coordinate:1:(Y_start_coordinate + Y_range)
-                if right
+                if right % check last moving direction
                     for j = X_start_coordinate:1:(X_start_coordinate + X_range)
                         posY = i;
                         posX = j;
@@ -87,7 +92,7 @@ classdef System
                     end
                         right = 0;
                         left = 1;
-                elseif left
+                elseif left % check last moving direction
                     for j = (X_start_coordinate + X_range):-1:X_start_coordinate
                         posY = i;
                         posX = j;

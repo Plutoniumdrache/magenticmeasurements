@@ -19,15 +19,16 @@ classdef printerFSM < handle
         end
 
         % eval method
-        function lock = eval(obj)
+        function exit = eval(obj)
+            exit = 0;
             nextstate = obj.currentState;
             switch obj.currentState
                 case obj.States.INIT
-                    str = input("Ist das Druckbett frei von jeglichen Hindernissen? (Y/N): ", 's');
-                    if str == 'N' || str == 'n'
+                    str = input("Ist das Druckbett frei von jeglichen Hindernissen? (y/n): ", 's');
+                    if str == 'n'
                         disp("Druckbett bitte freiräumen.");
                         nextstate = obj.States.INIT;
-                    elseif str == 'Y' || str == 'y'
+                    elseif str == 'y'
                         disp("Auto Home ...");
                         nextstate = obj.States.HOME;
                     else
@@ -46,8 +47,8 @@ classdef printerFSM < handle
                     nextstate = obj.States.PARAMETER_SETUP;
 
                 case obj.States.PARAMETER_SETUP
-                    str = input("Bitte die Messungsparameter in der init.m bearbeiten (Höhe, Startpunkt, Messfeldgröße). Fertig? (Y): ", 's');
-                    if str == 'Y' || str == 'y'
+                    str = input("Bitte die Messungsparameter in der init.m bearbeiten (Höhe, Startpunkt, Messfeldgröße). Fertig? (y) Exit? (e): ", 's');
+                    if str == 'y'
                         clear init;
                         run("init.m");
                         if obj.system.checkParameter(Y_start_coordinate, X_start_coordinate, Y_range, X_range, Z_height)
@@ -56,6 +57,8 @@ classdef printerFSM < handle
                         else
                             nextstate = obj.States.PARAMETER_SETUP;
                         end
+                    elseif str == 'e'
+                        exit = 1;
                     else
                         disp("Eingabe nicht erkannt.")
                         nextstate = obj.States.PARAMETER_SETUP;
@@ -67,11 +70,11 @@ classdef printerFSM < handle
                         obj.currentHeight = Z_height;
                         obj.system.setHeight(obj.currentHeight); % Höhe Messobjekt + gewünschten Abstand
                         
-                        str = input("Eingestellte Höhe passt so? (Y/N): ", 's');
-                        if str == 'Y' || str == 'y'
+                        str = input("Eingestellte Höhe passt so? (y/n): ", 's');
+                        if str == 'y'
                             disp("Verfahre zur Startposition");
                             nextstate = obj.States.INITIAL_XY_POSITION;
-                        elseif str == 'N' || str == 'n'
+                        elseif str == 'n'
                             nextstate = obj.States.PARAMETER_SETUP;
                         else
                             disp("Eingabe nicht erkannt.")
@@ -88,11 +91,11 @@ classdef printerFSM < handle
                     if obj.system.checkParameter(Y_start_coordinate, X_start_coordinate, Y_range, X_range, Z_height)
                         obj.system.moveToXY(X_start_coordinate, Y_start_coordinate, 3000);
                     
-                        str = input("Eingestellter Startpunkt passt so? (Y/N): ", 's');
-                        if str == 'Y' || str == 'y'
+                        str = input("Eingestellter Startpunkt passt so? (y/n): ", 's');
+                        if str == 'y'
                             disp("Beginne mit der Messung");
                             nextstate = obj.States.MEASURING;
-                        elseif str == 'N' || str == 'n'
+                        elseif str == 'n'
                             nextstate = obj.States.PARAMETER_SETUP;
                         else
                             disp("Eingabe nicht erkannt.")
@@ -116,10 +119,18 @@ classdef printerFSM < handle
                     % disp matrix as surf plot
                     disp("Zeige Messergergebnisse:")
                     [X,Y] = meshgrid(1:235, 1:235);
-                    surf(B_values)
+
+                    run("init.m"); % getting filename variable
+                    figurename = "MesergebnisseDateiname_ " + filename;
+                    figure('Name', figurename);
+                    surf(B_values);
+                    xlabel('X-Koordinaten in mm');
+                    ylabel('Y-Koordinaten in mm');
+                    zlabel('Magnetische Flussdichte in Tesla')
+                    title(figurename);
+                    grid on;
 
                     % write matrix to csv file
-                    run("init.m"); % getting filename variable
                     writematrix(B_values, filename + ".csv");
 
                     disp("Fahre Bett nach vorne.")
