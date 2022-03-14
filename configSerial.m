@@ -6,6 +6,10 @@ printer = serialport(COM_Printer, 115200, Timeout=2); % starting serial connecti
 printer.Terminator; 
 readline(printer);
 configureTerminator(printer,"CR");
+printer.writeline("M107"); % turn fan off
+printer.writeline("M104 S0"); % turn hot end heating off 
+printer.writeline("M140 S0"); % turn bed headting off
+pause(0.5);
 %% config arduino
 nano = serialport(COM_ArduinoNano, 19200, Timeout=1);
 nano.Terminator;

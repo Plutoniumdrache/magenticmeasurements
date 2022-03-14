@@ -47,7 +47,7 @@ classdef printerFSM < handle
                     nextstate = obj.States.PARAMETER_SETUP;
 
                 case obj.States.PARAMETER_SETUP
-                    str = input("Bitte die Messungsparameter in der init.m bearbeiten (Höhe, Startpunkt, Messfeldgröße). Fertig? (y) Exit? (e): ", 's');
+                    str = input("Bitte die Messungsparameter in der init.m bearbeiten (Höhe, Startpunkt, Messfeldgröße) und Objekt platzieren. Fertig? (y) Exit? (e): ", 's');
                     if str == 'y'
                         clear init;
                         run("init.m");

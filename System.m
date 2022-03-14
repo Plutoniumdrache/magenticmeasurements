@@ -47,21 +47,24 @@ classdef System
             % waiting for drive to complete
             while 1
                 data = obj.nano.readline; % getting coordinates from arduino
-                new = split(data, ","); % splitting the incomming coordinates
-                if data == new % check for empty messages
-                else
-                    obj.currPosX = double(new(1,1)); % converting to numbers
-                    obj.currPosY = double(new(2,1));
-                end
-                % checking postion
-                if (obj.currPosY == Y) && (obj.currPosX == X)
-                    break;
+                if isstring(data)
+                    new = split(data, ","); % splitting the incomming coordinates
+                    if data == new % check for empty messages
+                    else
+                        obj.currPosX = double(new(1,1)); % converting to numbers
+                        obj.currPosY = double(new(2,1));
+                    end
+                    % checking postion
+                    if (obj.currPosY == Y) && (obj.currPosX == X)
+                        break;
+                    end
                 end
             end
         end
         
         % move printhead to the given height
         function setHeight(obj, Z_height)
+            Z_height = Z_height + 4; % Offset correction
             obj.printer.writeline("G0 Z" + Z_height);
         end
 
@@ -119,7 +122,7 @@ classdef System
             if (Yscr >= 0) && (Yscr <= 235) && (Xscr >= 0) && (Xscr <= 235)
                 result_scr = 1;
             end
-            if (Zh >= 0) && (Zh <= 250)
+            if (Zh >= 5) && (Zh <= 250)
                 result_z = 1;
             end
             if result_z && result_scr && result_sc

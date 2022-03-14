@@ -8,10 +8,10 @@ X_start_coordinate = 20; % enter value from 0 - 235
 % Attention: The sum of the start coordinate value and the range value have
 % to be less or equal than 235!
 
-Y_range = 100; % enter value from 0 - 235
-X_range = 100; % enter value from 0 - 235
+Y_range = 10; % enter value from 0 - 235
+X_range = 10; % enter value from 0 - 235
 
-Z_height = 20; % enter value from 0 - 250
+Z_height = 10; % enter value from 5 - 250
 %% parameter for filename:
 filename = "data"; % enter only the filename NOT the extension
 
