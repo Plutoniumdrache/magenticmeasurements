@@ -1,6 +1,9 @@
 % Magnetic Field Scanner with 3D-Printer Ender 3
 % Author: Julius Preuschoff
 % Date: 23.02.2022
+%% Introduction
+% Please edit the init.m file for configuration of the COM Ports and the
+% measurement parameters. After that run this script. 
 %% Init System
 clear printer; % closing last serial connection
 clear nano;

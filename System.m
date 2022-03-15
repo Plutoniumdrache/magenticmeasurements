@@ -35,9 +35,9 @@ classdef System
             done = 1;
         end
         
-        % move printhead to given destination X Y with speed set up
+        % move printhead to given X Y destination  with given speed
         function moveToXY(obj, X, Y, speed)
-            % building the G-Code Command
+            % building the G-Code command
             initPosStr_Y = "G0 Y" + string(Y) + " F" + speed;
             initPosStr_X = "G0 X" + string(X) + " F" + speed;
             % sending absolute position to printer
@@ -48,13 +48,13 @@ classdef System
             while 1
                 data = obj.nano.readline; % getting coordinates from arduino
                 if isstring(data)
-                    new = split(data, ","); % splitting the incomming coordinates
+                    new = split(data, ","); % splitting the incoming coordinates
                     if data == new % check for empty messages
                     else
                         obj.currPosX = double(new(1,1)); % converting to numbers
                         obj.currPosY = double(new(2,1));
                     end
-                    % checking postion
+                    % checking position
                     if (obj.currPosY == Y) && (obj.currPosX == X)
                         break;
                     end
@@ -91,7 +91,7 @@ classdef System
                         posX = j;
                         disp("position: X " + posX + " Y" + posY); % show current position
                         obj.moveToXY(posX, posY, 500); % move to position
-                        values(posX + 1, posY + 1) = obj.getSensorValue(); % get sensor value
+                        values(posY + 1, posX + 1) = obj.getSensorValue(); % get sensor value
                     end
                         right = 0;
                         left = 1;
@@ -101,7 +101,7 @@ classdef System
                         posX = j;
                         disp("position: X " + posX + " Y" + posY); % show current position
                         obj.moveToXY(posX, posY, 500); % move to position
-                        values(posX + 1, posY + 1) = obj.getSensorValue(); % get sensor value
+                        values(posY + 1, posX + 1) = obj.getSensorValue(); % get sensor value
                     end
                      right = 1;
                      left = 0;
