@@ -26,7 +26,7 @@ classdef printerFSM < handle
                 case obj.States.INIT
                     str = input("Ist das Druckbett frei von jeglichen Hindernissen? (y/n): ", 's');
                     if str == 'n'
-                        disp("Druckbett bitte freiräumen.");
+                        disp("Druckbett bitte freiraeumen.");
                         nextstate = obj.States.INIT;
                     elseif str == 'y'
                         disp("Auto Home ...");
@@ -47,12 +47,12 @@ classdef printerFSM < handle
                     nextstate = obj.States.PARAMETER_SETUP;
 
                 case obj.States.PARAMETER_SETUP
-                    str = input("Bitte die Messungsparameter in der init.m bearbeiten (Höhe, Startpunkt, Messfeldgröße) und Objekt platzieren. Fertig? (y) Exit? (e): ", 's');
+                    str = input("Bitte die Messungsparameter in der init.m bearbeiten (Hoehe, Startpunkt, Messfeldgrosse) und Objekt platzieren. Fertig? (y) Exit? (e): ", 's');
                     if str == 'y'
                         clear init;
                         run("init.m");
                         if obj.system.checkParameter(Y_start_coordinate, X_start_coordinate, Y_range, X_range, Z_height)
-                            disp("Drucker verfährt zur eingestellten Höhe Z" + Z_height);
+                            disp("Drucker verfaehrt zur eingestellten Hoehe Z" + Z_height);
                             nextstate = obj.States.INITIAL_HEIGHT;
                         else
                             nextstate = obj.States.PARAMETER_SETUP;
@@ -68,9 +68,9 @@ classdef printerFSM < handle
                     run("init.m");
                     if obj.system.checkParameter(Y_start_coordinate, X_start_coordinate, Y_range, X_range, Z_height)
                         obj.currentHeight = Z_height;
-                        obj.system.setHeight(obj.currentHeight); % Höhe Messobjekt + gewünschten Abstand
+                        obj.system.setHeight(obj.currentHeight); 
                         
-                        str = input("Eingestellte Höhe passt so? (y/n): ", 's');
+                        str = input("Eingestellte Hoehe passt so? (y/n): ", 's');
                         if str == 'y'
                             disp("Verfahre zur Startposition");
                             nextstate = obj.States.INITIAL_XY_POSITION;
@@ -138,7 +138,7 @@ classdef printerFSM < handle
                     obj.system.setHeight(obj.currentHeight); % offset damit nicht gegen Bett gefahren wird
                     obj.system.moveToXY(0, 235, obj.travelspeed); % Bett nach vorne zur Beladung
                     nextstate = obj.States.PARAMETER_SETUP;
-                    disp("Die Messung kann jetzt erneut durchgeführt werden.")
+                    disp("Die Messung kann jetzt erneut gestartet werden.")
                 otherwise
             end
             obj.currentState = nextstate;
