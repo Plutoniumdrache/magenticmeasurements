@@ -129,7 +129,7 @@ classdef System
                 result = 1;
             else
                 result = 0;
-                disp("Fehler in den angebeben Parametern. Beachte die Regeln in der init.m Datei.")
+                disp("Fehler in den angebeben Parametern. Beachte die Regeln in der init.m Datei.");
             end
         end
     end

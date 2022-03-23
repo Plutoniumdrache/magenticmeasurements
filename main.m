@@ -23,6 +23,6 @@ while 1
         break;
     end
 end
-disp("Schrittmotoren deaktiviert.")
-writeline(printer, "M84") % disable steppers
-disp("Anwendung beendet.")
+disp("Schrittmotoren deaktiviert.");
+writeline(printer, "M84"); % disable steppers
+disp("Anwendung beendet.");

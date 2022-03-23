@@ -114,7 +114,7 @@ classdef printerFSM < handle
                     % convert values from Oe to T
                     my_0 = 1.256637061e-6;
                     my_r = 1; % air
-                    B_values = my_0 * my_0 * (1000 / 4*pi) * obj.values;
+                    B_values = my_0 * my_r * (1000 / 4*pi) * obj.values;
 
                     % disp matrix as surf plot
                     disp("Zeige Messergergebnisse:")
